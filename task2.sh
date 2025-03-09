@@ -8,6 +8,39 @@ set -o errexit
 ########################################
 
 
-if ! command -v "ngnix" 
-    then echo "ngnix is not installed... intaling"
+if ! command -v "nginx" ;then 
+    echo "nginx is not installed... instaling"
+    sudo apt update && sudo apt install -y nginx
+else 
+    echo "nginx is installed"
 fi
+
+
+if ! command -v "nginx" ;then 
+    echo "nginx package instalation failed"
+    exit 1
+fi
+
+if [ ! -f /etc/nginx/sites-available/default ]; then
+    echo "nginx is not configured."
+
+else
+    echo "nginx is configured with default configuration."
+fi
+
+
+echo Please enter host name
+read HOST_NAME
+echo $HOST_NAME
+CONTENT="server { \
+ listen 80; { \
+ server_name $HOST_NAME; { \
+ root /var/www/example.com; { \
+ index index.html; { \
+}"
+
+sudo sh -c "echo $CONTENT > /etc/nginx/sites-available/$HOST_NAME"
+
+sudo ln -s /etc/nginx/sites-available/$HOST_NAME /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+curl -I http://$HOST_NAME
