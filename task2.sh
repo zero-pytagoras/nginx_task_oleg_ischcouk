@@ -33,14 +33,18 @@ echo Please enter host name
 read HOST_NAME
 echo $HOST_NAME
 CONTENT="server { \
- listen 80; { \
- server_name $HOST_NAME; { \
- root /var/www/example.com; { \
- index index.html; { \
+ listen 80; \
+ server_name $HOST_NAME;  \
+ root /var/www/$HOST_NAME; \
+ index index.html; \
 }"
 
-sudo sh -c "echo $CONTENT > /etc/nginx/sites-available/$HOST_NAME"
-
+sudo sh -c "echo '$CONTENT' > /etc/nginx/sites-available/$HOST_NAME"
+sudo rm -f /etc/nginx/sites-enabled/$HOST_NAME
 sudo ln -s /etc/nginx/sites-available/$HOST_NAME /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
+
+sudo sh -c "echo 127.0.0.1 >> /etc/hosts"
 curl -I http://$HOST_NAME
+
+
