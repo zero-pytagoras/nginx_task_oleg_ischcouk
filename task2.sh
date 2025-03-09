@@ -8,3 +8,5 @@ set -o errexit
 ########################################
 
 
+if ! command -v "ngnix" 
+then echo "ngnix is not installed... intaling"
