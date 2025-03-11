@@ -21,6 +21,9 @@ if ! command -v "nginx" ;then
     exit 1
 fi
 
+
+VIRTUAL_HOSTS=ls -1 /etc/nginx/sites-available/ | wc -l
+echo $VIRTUAL_HOSTS
 if [ ! -f /etc/nginx/sites-available/default ]; then
     echo "nginx is not configured."
 
@@ -44,7 +47,7 @@ sudo rm -f /etc/nginx/sites-enabled/$HOST_NAME
 sudo ln -s /etc/nginx/sites-available/$HOST_NAME /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
-sudo sh -c "echo 127.0.0.1 $HOST_NAME > ~/hosts"
+#sudo sh -c "echo 127.0.0.1 $HOST_NAME > ~/hosts"
 curl -I http://$HOST_NAME
 
 
