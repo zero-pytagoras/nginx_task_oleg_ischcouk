@@ -57,6 +57,7 @@ sudo ln -s /etc/nginx/sites-available/$HOST_NAME /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
 #sudo sh -c "echo 127.0.0.1 $HOST_NAME > ~/hosts"
+echo "127.0.0.1 $HOST_NAME" | sudo tee -a /etc/hosts
 curl -I http://$HOST_NAME
 
 
