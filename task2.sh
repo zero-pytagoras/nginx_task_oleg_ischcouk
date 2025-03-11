@@ -54,6 +54,8 @@ CONTENT="server { \
 sudo sh -c "echo '$CONTENT' > /etc/nginx/sites-available/$HOST_NAME"
 sudo rm -f /etc/nginx/sites-enabled/$HOST_NAME
 sudo ln -s /etc/nginx/sites-available/$HOST_NAME /etc/nginx/sites-enabled/
+sudo mkdir -p "/var/www/$HOST_NAME"
+sudo chown -R www-data:www-data "/var/www/$HOST_NAME"
 sudo systemctl restart nginx
 
 #sudo sh -c "echo 127.0.0.1 $HOST_NAME > ~/hosts"
