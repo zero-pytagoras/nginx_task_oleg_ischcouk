@@ -5,6 +5,7 @@
 #Version: 1.0.0
 set -o errexit
 #set -o pipefail
+set -x
 ########################################
 
 
@@ -22,8 +23,10 @@ if ! command -v "nginx" ;then
 fi
 
 
-VIRTUAL_HOSTS=ls -1 /etc/nginx/sites-available/ | wc -l
-echo $VIRTUAL_HOSTS
+VIRTUAL_HOSTS_COUNT=ls -1 /etc/nginx/sites-available/ | wc -l
+echo **************
+echo $VIRTUAL_HOSTS_COUNT
+echo **************
 if [ ! -f /etc/nginx/sites-available/default ]; then
     echo "nginx is not configured."
 
