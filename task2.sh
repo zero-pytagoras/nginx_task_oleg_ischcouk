@@ -5,7 +5,7 @@
 #Version: 1.0.0
 set -o errexit
 #set -o pipefail
-set -x
+#set -x
 ########################################
 
 
@@ -23,17 +23,22 @@ if ! command -v "nginx" ;then
 fi
 
 
-VIRTUAL_HOSTS_COUNT=ls -1 /etc/nginx/sites-available/ | wc -l
+VIRTUAL_HOSTS_COUNT=`ls -1 /etc/nginx/sites-available/ | wc -l`
 echo **************
 echo $VIRTUAL_HOSTS_COUNT
 echo **************
-if [ ! -f /etc/nginx/sites-available/default ]; then
-    echo "nginx is not configured."
+
+if ([ -f /etc/nginx/sites-available/default ] && [ $VIRTUAL_HOSTS_COUNT -eq 1 ]); then
+    echo "nginx virtual host is configured with default configuration."
 
 else
-    echo "nginx is configured with default configuration."
+    if [ $VIRTUAL_HOSTS_COUNT -eq 0 ]; then 
+        echo "nginx virtual host is not configured."
+    else 
+        echo "nginx virtual host is already configured."
+        exit 0
+    fi
 fi
-
 
 echo Please enter host name
 read HOST_NAME
@@ -44,6 +49,7 @@ CONTENT="server { \
  root /var/www/$HOST_NAME; \
  index index.html; \
 }"
+
 
 sudo sh -c "echo '$CONTENT' > /etc/nginx/sites-available/$HOST_NAME"
 sudo rm -f /etc/nginx/sites-enabled/$HOST_NAME
